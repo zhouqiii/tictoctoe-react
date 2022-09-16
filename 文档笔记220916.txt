@@ -1,0 +1,34 @@
+A.state和生命周期 timer.js
+  正确的使用state:
+    1.除了在constructor里直接为this.state赋值，其他的更新state数据都是通过setState(),react使用setState更新state数据然后在去render
+    2.this.state和this.props的更新可能是异步的，所以不要依赖它们的值来更新下一个状态，可能起不到作用，例如
+      // wrong
+      this.setState({
+        counter: this.state.countr + this.props.value
+      })
+      // correct--解决这个问题,让setState接收函数而不是一个对象，state和props作为参数,这时候就是把上一个状态的state和props传进去了，解决了异步的问题
+      this.setState((state, props) => ({
+        counter: state.counter + props.value
+      }))
+    3.state的更新会被合并，也就是说使用setState()更新state数据时，只有setState里面指明的state属性会被更新
+      // eg
+      constructor(props) {
+        super(props);
+        this.state = {
+          posts: [],
+          comments: []
+        };
+      }
+      this.setState({
+        comments: response.comments
+      });
+      this.setState({comments})完整的保留了this.state.posts,但是完全替换了this.state.comments
+    4.数据是向下流动的
+      a) 当前组件不管是它的父组件还是它的子组件都无法回到该组件是有状态的还是无状态的，并且也不关心它是class组件还是函数组件===>这就是为什么成称state是局部的或说是封闭的原因，除了拥有并设置了它的组件，其他组件都无法访问
+      b) "从上而下"或说是"单向"的数据流===>组件可以选择把他的state作为props数据源向下传递到它的子组件中，也可以选择把他的props作为数据源向下传递到它的子组件中，但子组件本身不知道它接收的props的来源
+        //<Clock />假如Clock组件的子组件
+          <FormattedDate date={this.state.date} />
+        // FormattedDate组件--FormattedDate 组件会在其 props 中接收参数 date，但是组件本身无法知道它是来自于 Clock 的 state，或是 Clock 的 props，还是手动输入的：
+          function FormattedDate(props) {
+            return <h2>It is {props.date.toLocaleTimeString()}.</h2>;
+          } 

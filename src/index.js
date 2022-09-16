@@ -14,8 +14,9 @@ import './index.css';
 //     );
 //   }
 // }
-  // 相比于上面基于React.Component的子组件Square，这里改写成一个函数组件
-  // 如果你想写的组件只包含一个render方法，并且不包括state，那么使用函数组件就会更简单，函数接收props作为参数
+  // 相比于上面基于React.Component的<classs组件>Square，这里把该组件用<函数组件>的形式实现
+  // 函数组件是react实现简单组件的首选方式，它本质上就是一个js函数，
+  // 如果你想写的组件只包含一个render方法，并且不包括state，那么使用函数组件就会更简单，函数组件固定接收props作为参数，并返回用于页面展示内容的react元素
   function Square(props){
     return (
       <button
