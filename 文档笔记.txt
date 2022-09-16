@@ -1,4 +1,4 @@
-A.state和生命周期 timer.js
+A.state和生命周期 timer.js ===> 22.09.16
   正确的使用state:
     1.除了在constructor里直接为this.state赋值，其他的更新state数据都是通过setState(),react使用setState更新state数据然后在去render
     2.this.state和this.props的更新可能是异步的，所以不要依赖它们的值来更新下一个状态，可能起不到作用，例如
