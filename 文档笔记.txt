@@ -31,4 +31,69 @@ A.state和生命周期 timer.js ===> 22.09.16
         // FormattedDate组件--FormattedDate 组件会在其 props 中接收参数 date，但是组件本身无法知道它是来自于 Clock 的 state，或是 Clock 的 props，还是手动输入的：
           function FormattedDate(props) {
             return <h2>It is {props.date.toLocaleTimeString()}.</h2>;
-          } 
+          }
+B.事件处理 
+  // 方式一
+  class Toggle extends React.Component {
+    constructor(props) {
+      super(props);
+      this.state = {isToggleOn: true};
+
+      this.handleClickT = this.handleClick.bind(this)
+    }
+
+    handleClick(){
+      this.setState((state, props) => ({
+        isToggleOn: !state.isToggleOn
+      }))
+    }
+    render() {
+      return(
+        <button onClick={this.handleClickT}><!--如果在这一步直接onClick={this.handleClick}那么会报错，这是因为这种方式handleClick内部没有绑定this，这种方式的handleClick内部this为undefined-->
+          {this.state.isToggleOn ? 'ON' : 'OFF'}
+        </button>
+      )
+    }
+  }
+  // 方式二 ==> 与上面实现作用等价 ES6的使用方法 箭头函数
+  class Toggle extends React.Component {
+    constructor(props) {
+      super(props);
+      this.state = {isToggleOn: true};
+    }
+    // 此语法确保`handleClick`内部的`this`已被绑定
+    handleClick = () => {
+      this.setState((state, props) => ({
+        isToggleOn: !state.isToggleOn
+      }))
+    }
+    render() {
+      return(
+        <button onClick={this.handleClick}>
+          {this.state.isToggleOn ? 'ON' : 'OFF'}
+        </button>
+      )
+    }
+  }
+  // 方式三 ==> 如以下说明，不建议使用这种事件方式
+  class Toggle extends React.Component {
+    constructor(props) {
+      super(props);
+      this.state = {isToggleOn: true};
+    }
+    handleClick(){
+      this.setState((state, props) => ({
+        isToggleOn: !state.isToggleOn
+      }))
+    }
+    render() {
+      return(
+        <!--此语法确保`handleClick`内部的`this`已被绑定,但问题在于每次渲染Toggle组件时都需要重新渲染this-->
+        <button onClick={() => this.handleClick}>
+          {this.state.isToggleOn ? 'ON' : 'OFF'}
+        </button>
+      )
+    }
+  }
+C.React哲学  index-main.js ===> 22.09.21 
+    ===> 遗留问题: 当两个input同时筛选时，出现问题
