@@ -38,15 +38,21 @@ class Search extends React.Component{
   }
   inputChange = (e) => {
     if(e.target.type === 'text'){
-      this.setState({
+      let searchValueList = []
+      if(this.state.isCheck){
+        searchValueList = (data.filter((item) => item.stocked === true)).filter((st) => st.name.indexOf(e.target.value) > -1)
+      }else{
+        searchValueList = data.filter((item) => item.name.indexOf(e.target.value) > -1)
+      }
+      this.setState(state => ({
         searchValue: e.target.value,
-        dataOrigin: data.filter((item) => item.name.indexOf(e.target.value) > -1)
-      })
+        dataOrigin: searchValueList
+      }))
     }else{
-      this.setState({
+      this.setState(state => ({
         isCheck: e.target.checked,
-        dataOrigin: e.target.checked ? data.filter((item) => item.stocked === true) : data
-      })
+        dataOrigin: e.target.checked ? state.dataOrigin.filter((item) => item.stocked === true) : data.filter((item) => item.name.indexOf(state.searchValue) > -1)
+      }))
     }
   }
   render() {

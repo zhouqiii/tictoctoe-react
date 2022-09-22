@@ -95,5 +95,6 @@ B.事件处理
       )
     }
   }
-C.React哲学  index-main.js ===> 22.09.21 
+C.React哲学:构建一个产品搜索list  index-main.js ===> 22.09.21 
     ===> 遗留问题: 当两个input同时筛选时，出现问题
+          遗留问题解决 2022.09.22 比较两次提交的index—main.js文件差别解决了这个问题
